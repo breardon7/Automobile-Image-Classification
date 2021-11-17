@@ -1,18 +1,8 @@
 # //model//
 
 # //packages
-import os
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
-
-
-# //pathing
-OR_PATH = os.getcwd()
-os.chdir("..") # Change to the parent directory
-PATH = os.getcwd()
-DATA_DIR = os.getcwd() + os.path.sep + 'Data' + os.path.sep
-sep = os.path.sep
-os.chdir(OR_PATH) # Come back to the directory where the code resides , all files will be left on this directory
 
 # //parameters
 LR = 1e-3
