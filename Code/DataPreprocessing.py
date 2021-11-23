@@ -14,11 +14,10 @@ def image_feature_extraction(samples, img_dir, image_size):
         image_file_path = os.path.join(img_dir, image_path)
         try:
             image = cv2.imread(image_file_path, cv2.IMREAD_COLOR)
-            image = cv2.resize(image, (image_size, image_size))
+            image_resized = cv2.resize(image, (image_size, image_size))
+            dataset.append([np.array(image_resized), np.array(data[4])])
         except:
             continue
-        dataset.append([np.array(image), np.array(data[4])])
+
     random.shuffle(dataset)
     return dataset
-
-
