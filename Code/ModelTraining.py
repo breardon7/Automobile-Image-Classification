@@ -17,7 +17,7 @@ IMAGE_SIZE = 224
 CHANNELS = 3
 BATCH_SIZE = 64
 MONITOR_VAL = "val_accuracy"
-SAMPLE_SIZE = 4000
+SAMPLE_SIZE = 1000
 
 module_dir = os.path.dirname(__file__)
 train_meta_data_file_path = os.path.join(module_dir, 'Dataset/Metadata/train-meta.xlsx')
