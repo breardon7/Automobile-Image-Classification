@@ -2,6 +2,8 @@ import os
 
 import numpy as np
 import pandas as pd
+import tensorflow
+from keras.layers import BatchNormalization, MaxPooling2D, Conv2D, AveragePooling2D, Dropout
 from tensorflow.python.keras.applications.vgg19 import VGG19
 from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.python.keras.layers import Flatten, Dense
@@ -18,11 +20,11 @@ IMAGE_SIZE = 224
 CHANNELS = 3
 BATCH_SIZE = 64
 MONITOR_VAL = "val_accuracy"
-SAMPLE_SIZE = 4000
+SAMPLE_SIZE = 500
 LR = 1e-3
 DROPOUT = 0.5
 
-module_dir = os.path.dirname(__file__) # Set path to current directory
+module_dir = os.path.dirname(__file__)  # Set path to current directory
 train_meta_data_file_path = os.path.join(module_dir, 'Dataset/Metadata/train-meta.xlsx')
 train_data = pd.read_excel(train_meta_data_file_path).head(SAMPLE_SIZE)
 train_images_file_path = os.path.join(module_dir, 'Dataset/Train/')
@@ -48,8 +50,9 @@ loss = keras.losses.CategoricalCrossentropy(
     name='categorical_crossentropy'
 )
 
-def model_definition(pretrained = True):
-    if pretrained = True:
+
+def model_definition(pretrained=True):
+    if pretrained == True:
         # // pretrained model - vgg19
         vgg = VGG19(weights="imagenet", include_top=False, input_shape=(IMAGE_SIZE, IMAGE_SIZE, CHANNELS),
                     classes=y_train.shape[1])
@@ -60,7 +63,11 @@ def model_definition(pretrained = True):
         model.add(Flatten())
         model.add(Dense(197, activation="softmax"))
         checkpoint = ModelCheckpoint("vgg19.h5", monitor=MONITOR_VAL, verbose=1, save_best_only=True,
-                                     save_weights_only=False, period=1)
+                                    save_weights_only=False, period=1)
+        model.compile(optimizer='Adam', loss=loss, metrics=["accuracy"])
+        early_stopping = EarlyStopping(monitor=MONITOR_VAL, patience=5, verbose=1)
+        model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=1, validation_data=(x_test, y_test),
+                  verbose=1, callbacks=[checkpoint, early_stopping])
     else:
         # // CNN model
         model = Sequential([
@@ -78,11 +85,11 @@ def model_definition(pretrained = True):
         ])
         checkpoint = ModelCheckpoint("CNN.h5", monitor=MONITOR_VAL, verbose=1, save_best_only=True,
                                      save_weights_only=False, period=1)
+        model.compile(optimizer='Adam', loss=loss, metrics=["accuracy"])
+        early_stopping = EarlyStopping(monitor=MONITOR_VAL, patience=5, verbose=1)
+        model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=1, validation_data=(x_test, y_test),
+                  verbose=1, callbacks=[checkpoint, early_stopping])
 
-    model.compile(optimizer="adam"(lr=LR), loss=loss, metrics=["accuracy"])
-    early_stopping = EarlyStopping(monitor=MONITOR_VAL, patience=5, verbose=1)
-    model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=1, validation_data=(x_test, y_test),
-              verbose=1, callbacks=[checkpoint, early_stopping])
 
 def model_predict(model):
     y_pred = model.predict(x_test)
