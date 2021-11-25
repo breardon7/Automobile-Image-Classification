@@ -7,6 +7,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import tensorflow as tf
 
+IMAGE_SIZE = 224
 
 def image_feature_extraction(samples, img_dir, image_size):
     dataset = []
@@ -29,13 +30,14 @@ def image_feature_extraction(samples, img_dir, image_size):
     random.shuffle(dataset)
     return dataset
 
+
 data_augmentation = tf.keras.Sequential([
     tf.keras.layers.RandomFlip('horizontal_and_vertical', input_shape=(IMAGE_SIZE,
                                                                        IMAGE_SIZE,
                                                                        3)),
-    tf.keras.layers.RandomRotation(0.2),
-    tf.keras.layers.RandomContrast(factor, seed=None, **kwargs)
+    tf.keras.layers.RandomRotation(0.2)
 ])
+
 
 def image_augmentation(samples, img_dir, image_size):
     dataset = []
