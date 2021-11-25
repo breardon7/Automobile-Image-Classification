@@ -2,10 +2,10 @@
 <project version="4">
   <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="AWS">
+      <paths name="ubuntu@34.205.159.20:22 key">
         <serverdata>
           <mappings>
-            <mapping deploy="/Code/ComputerVision" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/home/ubuntu/Computer-Vision" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
