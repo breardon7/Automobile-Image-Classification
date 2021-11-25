@@ -32,22 +32,22 @@ train_data = pd.read_excel(train_meta_data_file_path).head(SAMPLE_SIZE)
 train_images_file_path = os.path.join(module_dir, 'Dataset/Train/')
 
 # Add value counts of targets as column
-# target_counts = train_data['class'].value_counts()
-# target_counts_dict = target_counts.to_dict()
-# train_data_copy = train_data.copy()
-# train_data_copy['Counts'] = train_data_copy['class'].map(target_counts_dict)
+target_counts = train_data['class'].value_counts()
+target_counts_dict = target_counts.to_dict()
+train_data_copy = train_data.copy()
+train_data_copy['Counts'] = train_data_copy['class'].map(target_counts_dict)
 
 # Create train dataset for augmentation
-# train_data_1 = train_data_copy[train_data_copy['Counts'] = 1].copy()
-# train_data_1 = pd.concat([xdf_dset_low_reps]*10, ignore_index=True)
-# train_data_2 = train_data_copy[train_data_copy['Counts'] = 2].copy()
-# train_data_2 = pd.concat([xdf_dset_low_reps]*5, ignore_index=True)
-# train_data_3 = train_data_copy[train_data_copy['Counts'] = 3].copy()
-# train_data_3 = pd.concat([xdf_dset_low_reps]*3, ignore_index=True)
-# train_data_4 = train_data_copy[train_data_copy['Counts'] >= 4].copy()
-# train_data_4 = pd.concat([xdf_dset_low_reps]*2, ignore_index=True)
-# frames = [train_data_1,train_data_2,train_data_3,train_data_4]
-# train_data_aug = pd.concat(frames)
+train_data_1 = train_data_copy[train_data_copy['Counts'] == 1].copy()
+train_data_1 = pd.concat([train_data_1]*10, ignore_index=True)
+train_data_2 = train_data_copy[train_data_copy['Counts'] == 2].copy()
+train_data_2 = pd.concat([train_data_2]*5, ignore_index=True)
+train_data_3 = train_data_copy[train_data_copy['Counts'] == 3].copy()
+train_data_3 = pd.concat([train_data_3]*3, ignore_index=True)
+train_data_4 = train_data_copy[train_data_copy['Counts'] >= 4].copy()
+train_data_4 = pd.concat([train_data_4]*2, ignore_index=True)
+frames = [train_data_1,train_data_2,train_data_3,train_data_4]
+train_data_aug = pd.concat(frames)
 
 
 # Test Dataset creation
