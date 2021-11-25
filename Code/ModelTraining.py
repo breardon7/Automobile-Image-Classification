@@ -69,7 +69,6 @@ y_test = np.array([i[1] for i in test_images])
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
 
-
 loss = keras.losses.CategoricalCrossentropy(
     from_logits=False, label_smoothing=0.0, axis=-1,
     reduction=losses_utils.ReductionV2.AUTO,
@@ -90,7 +89,7 @@ def model_definition(pretrained=True):
         model.add(Flatten())
         model.add(Dense(CLASSES, activation="softmax"))
         checkpoint = ModelCheckpoint("vgg19.h5", monitor=MONITOR_VAL, verbose=1, save_best_only=True,
-                                     save_weights_only=False, period=1)
+                                     save_weights_only=False, save_freq=1)
         model.compile(optimizer='Adam', loss=loss, metrics=["accuracy"])
         early_stopping = EarlyStopping(monitor=MONITOR_VAL, patience=5, verbose=1)
         model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=1, validation_data=(x_test, y_test),
@@ -111,7 +110,7 @@ def model_definition(pretrained=True):
             Dense(CLASSES, activation="softmax")
         ])
         checkpoint = ModelCheckpoint("CNN.h5", monitor=MONITOR_VAL, verbose=1, save_best_only=True,
-                                     save_weights_only=False, period=1)
+                                     save_weights_only=False, save_freq=1)
         model.compile(optimizer='Adam', loss=loss, metrics=["accuracy"])
         early_stopping = EarlyStopping(monitor=MONITOR_VAL, patience=5, verbose=1)
         model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=1, validation_data=(x_test, y_test),
