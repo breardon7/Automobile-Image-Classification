@@ -1,0 +1,10 @@
+# Any file in these directories
+.idea/
+Code/Dataset/Test/
+Code/Dataset/Train/
+
+
+# Any file with this type
+.DS_Store
+.xml
+.iml
