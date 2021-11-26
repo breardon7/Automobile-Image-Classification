@@ -17,7 +17,7 @@ IMAGE_SIZE = 224
 CHANNELS = 3
 BATCH_SIZE = 64
 MONITOR_VAL = "val_accuracy"
-SAMPLE_SIZE = 1000
+SAMPLE_SIZE = 500
 
 module_dir = os.path.dirname(__file__)
 train_meta_data_file_path = os.path.join(module_dir, 'Dataset/Metadata/train-meta.xlsx')
@@ -56,8 +56,12 @@ model.compile(optimizer="adam", loss=loss, metrics=["accuracy"])
 checkpoint = ModelCheckpoint("vgg19.h5", monitor=MONITOR_VAL, verbose=1, save_best_only=True,
                              save_weights_only=False, period=1)
 early_stopping = EarlyStopping(monitor=MONITOR_VAL, patience=5, verbose=1)
-model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=1, validation_data=(x_test, y_test),
+model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=10, validation_data=(x_test, y_test),
           verbose=1, callbacks=[checkpoint, early_stopping])
 
 y_pred = model.predict(x_test)
-print(classification_report(y_test, y_pred))
+
+y_test = np.argmax(y_test, axis=1)
+y_pred = np.argmax(y_pred, axis=1)
+
+print(classification_report(y_pred, y_test))
