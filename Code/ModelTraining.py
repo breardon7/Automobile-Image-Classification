@@ -54,16 +54,16 @@ train_data_copy['Counts'] = train_data_copy['class'].map(target_counts_dict)
 print(train_data_copy)
 
 # Create train dataset for augmentation
-# train_data_1 = train_data_copy[train_data_copy['Counts'] = 1].copy()
-# train_data_1 = pd.concat([xdf_dset_low_reps]*10, ignore_index=True)
-# train_data_2 = train_data_copy[train_data_copy['Counts'] = 2].copy()
-# train_data_2 = pd.concat([xdf_dset_low_reps]*5, ignore_index=True)
-# train_data_3 = train_data_copy[train_data_copy['Counts'] = 3].copy()
-# train_data_3 = pd.concat([xdf_dset_low_reps]*3, ignore_index=True)
-# train_data_4 = train_data_copy[train_data_copy['Counts'] >= 4].copy()
-# train_data_4 = pd.concat([xdf_dset_low_reps]*2, ignore_index=True)
-# frames = [train_data_1,train_data_2,train_data_3,train_data_4]
-# train_data_aug = pd.concat(frames)
+train_data_1 = train_data_copy[train_data_copy['Counts'] = 1].copy()
+train_data_1 = pd.concat([train_data_1]*10, ignore_index=True)
+train_data_2 = train_data_copy[train_data_copy['Counts'] = 2].copy()
+train_data_2 = pd.concat([train_data_2]*5, ignore_index=True)
+train_data_3 = train_data_copy[train_data_copy['Counts'] = 3].copy()
+train_data_3 = pd.concat([train_data_3]*3, ignore_index=True)
+train_data_4 = train_data_copy[train_data_copy['Counts'] >= 4].copy()
+train_data_4 = pd.concat([train_data_4]*2, ignore_index=True)
+frames = [train_data_1,train_data_2,train_data_3,train_data_4]
+train_data_aug = pd.concat(frames)
 
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
@@ -114,21 +114,3 @@ def model_predict(model):
     print('Classification Report: Model = {}'.format(model))
     print(classification_report(y_test, y_pred))
 
-
-'''
-vgg = VGG19(weights="imagenet", include_top=False, input_shape=(IMAGE_SIZE, IMAGE_SIZE, CHANNELS),
-            classes=y_train.shape[1])
-for layer in vgg.layers:
-    layer.trainable = False
-model = Sequential()
-model.add(vgg)
-model.add(Flatten())
-model.add(Dense(197, activation="softmax"))
-model.compile(optimizer="adam", loss=loss, metrics=["accuracy"])
-checkpoint = ModelCheckpoint("vgg19.h5", monitor=MONITOR_VAL, verbose=1, save_best_only=True,
-                             save_weights_only=False, period=1)
-
-early_stopping = EarlyStopping(monitor=MONITOR_VAL, patience=5, verbose=1)
-model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=1, validation_data=(x_test, y_test),
-          verbose=1, callbacks=[checkpoint, early_stopping])
-'''
