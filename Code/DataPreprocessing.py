@@ -34,7 +34,7 @@ def image_feature_extraction(samples, img_dir, image_size, augment=False):
             if augment:
                 image_resized = data_augmentation(tf.expand_dims(image_resized, 0))[0]
                 if i < 5:
-                    img = Image.fromarray(cropped_image, 'RGB')
+                    img = Image.fromarray(image_resized, 'RGB')
                     img.show()
             dataset.append([np.array(image_resized), np.array(data[4])])
         except:
