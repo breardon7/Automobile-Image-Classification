@@ -55,14 +55,14 @@ print(train_data_copy)
 
 # Create train dataset for augmentation
 train_data_1 = train_data_copy[train_data_copy['Counts'] == 1].copy()
-train_data_1 = pd.concat([train_data_1] * 10, ignore_index=True)
+train_data_1 = pd.concat([train_data_1]*10, ignore_index=True)
 train_data_2 = train_data_copy[train_data_copy['Counts'] == 2].copy()
-train_data_2 = pd.concat([train_data_2] * 5, ignore_index=True)
+train_data_2 = pd.concat([train_data_2]*5, ignore_index=True)
 train_data_3 = train_data_copy[train_data_copy['Counts'] == 3].copy()
-train_data_3 = pd.concat([train_data_3] * 3, ignore_index=True)
+train_data_3 = pd.concat([train_data_3]*3, ignore_index=True)
 train_data_4 = train_data_copy[train_data_copy['Counts'] >= 4].copy()
-train_data_4 = pd.concat([train_data_4] * 2, ignore_index=True)
-frames = [train_data_1, train_data_2, train_data_3, train_data_4]
+train_data_4 = pd.concat([train_data_4]*2, ignore_index=True)
+frames = [train_data_1,train_data_2,train_data_3,train_data_4]
 train_data_aug = pd.concat(frames)
 
 y_train = to_categorical(y_train)
@@ -113,3 +113,4 @@ def model_predict(model):
     y_pred = model.predict(x_test)
     print('Classification Report: Model = {}'.format(model))
     print(classification_report(y_test, y_pred))
+
