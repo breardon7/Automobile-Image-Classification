@@ -17,7 +17,7 @@ IMAGE_SIZE = 224
 CHANNELS = 3
 BATCH_SIZE = 64
 MONITOR_VAL = "val_accuracy"
-SAMPLE_SIZE = 10
+SAMPLE_SIZE = 1000
 LR = 1e-3
 DROPOUT = 0.5
 CLASSES = 197
@@ -33,15 +33,6 @@ test_meta_data_file_path = os.path.join(module_dir, 'Dataset/Metadata/test_meta.
 test_data = pd.read_excel(test_meta_data_file_path).head(SAMPLE_SIZE)
 test_images_file_path = os.path.join(module_dir, 'Dataset/Test/')
 
-# Encode images for training datasets
-train_images = DataPreprocessing.image_feature_extraction(train_data, train_images_file_path, IMAGE_SIZE, True)
-x_train = np.array([i[0] for i in train_images]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
-y_train = np.array([i[1] for i in train_images])
-
-# Encode images for test datasets
-test_images = DataPreprocessing.image_feature_extraction(test_data, test_images_file_path, IMAGE_SIZE, False)
-x_test = np.array([i[0] for i in test_images]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
-y_test = np.array([i[1] for i in test_images])
 
 # Data Augmentation
 # Add value counts of targets as column
@@ -49,19 +40,30 @@ target_counts = train_data['class'].value_counts()
 target_counts_dict = target_counts.to_dict()
 train_data_copy = train_data.copy()
 train_data_copy['Counts'] = train_data_copy['class'].map(target_counts_dict)
-print(train_data_copy)
 
 # Create train dataset for augmentation
 train_data_1 = train_data_copy[train_data_copy['Counts'] == 1].copy()
-train_data_1 = pd.concat([train_data_1]*10, ignore_index=True)
+train_data_1 = pd.concat([train_data_1] * 10, ignore_index=True)
 train_data_2 = train_data_copy[train_data_copy['Counts'] == 2].copy()
-train_data_2 = pd.concat([train_data_2]*5, ignore_index=True)
+train_data_2 = pd.concat([train_data_2] * 5, ignore_index=True)
 train_data_3 = train_data_copy[train_data_copy['Counts'] == 3].copy()
-train_data_3 = pd.concat([train_data_3]*3, ignore_index=True)
+train_data_3 = pd.concat([train_data_3] * 3, ignore_index=True)
 train_data_4 = train_data_copy[train_data_copy['Counts'] >= 4].copy()
-train_data_4 = pd.concat([train_data_4]*2, ignore_index=True)
-frames = [train_data_1,train_data_2,train_data_3,train_data_4]
+train_data_4 = pd.concat([train_data_4] * 2, ignore_index=True)
+frames = [train_data_1, train_data_2, train_data_3, train_data_4]
 train_data_aug = pd.concat(frames)
+
+# Encode images for training datasets
+train_images = DataPreprocessing.image_feature_extraction(train_data, train_images_file_path, IMAGE_SIZE, False)
+train_aug_images = DataPreprocessing.image_feature_extraction(train_data_aug, train_images_file_path, IMAGE_SIZE, True)
+train_images_final = train_images + train_aug_images
+x_train = np.array([i[0] for i in train_images_final]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
+y_train = np.array([i[1] for i in train_images_final])
+
+# Encode images for test datasets
+test_images = DataPreprocessing.image_feature_extraction(test_data, test_images_file_path, IMAGE_SIZE, False)
+x_test = np.array([i[0] for i in test_images]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
+y_test = np.array([i[1] for i in test_images])
 
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
@@ -111,4 +113,3 @@ def model_predict(model):
     y_pred = model.predict(x_test)
     print('Classification Report: Model = {}'.format(model))
     print(classification_report(y_test, y_pred))
-
