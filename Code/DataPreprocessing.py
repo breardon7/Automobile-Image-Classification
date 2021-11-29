@@ -35,10 +35,7 @@ def image_feature_extraction(samples, img_dir, image_size, augment=False):
                                  norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F) # normalize image
             if augment:
                 aug_image = data_augmentation(tf.expand_dims(image_normalized, 0))[0]
-                if i < 5:
-                    plt.imshow(aug_image)
-                    plt.show()
-                    dataset.append([np.array(aug_image), np.array(data[4])])
+                dataset.append([np.array(aug_image), np.array(data[4])])
             else:
                 dataset.append([np.array(image_normalized), np.array(data[4])])
         except:
