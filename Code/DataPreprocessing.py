@@ -31,14 +31,16 @@ def image_feature_extraction(samples, img_dir, image_size, augment=False):
             image = cv2.imread(image_file_path, cv2.IMREAD_COLOR)
             cropped_image = image[y1:y2, x1:x2]
             image_resized = cv2.resize(cropped_image, (image_size, image_size))
+            image_normalized = cv2.normalize(image_resized, None, alpha=0, beta=1,
+                                 norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F) # normalize image
             if augment:
-                aug_image = data_augmentation(tf.expand_dims(image_resized, 0))[0]
+                aug_image = data_augmentation(tf.expand_dims(image_normalized, 0))[0]
                 if i < 5:
                     plt.imshow(aug_image)
                     plt.show()
                     dataset.append([np.array(aug_image), np.array(data[4])])
             else:
-                dataset.append([np.array(image_resized), np.array(data[4])])
+                dataset.append([np.array(image_normalized), np.array(data[4])])
         except:
             continue
 

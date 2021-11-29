@@ -17,7 +17,7 @@ IMAGE_SIZE = 224
 CHANNELS = 3
 BATCH_SIZE = 64
 MONITOR_VAL = "val_accuracy"
-SAMPLE_SIZE = 1000
+SAMPLE_SIZE = 10
 LR = 1e-3
 DROPOUT = 0.5
 CLASSES = 197
@@ -28,15 +28,13 @@ module_dir = os.path.dirname(__file__)  # Set path to current directory
 train_meta_data_file_path = os.path.join(module_dir, 'Dataset/Metadata/train-meta.xlsx')
 train_data = pd.read_excel(train_meta_data_file_path).head(SAMPLE_SIZE)
 train_images_file_path = os.path.join(module_dir, 'Dataset/Train/')
-
 # Test Dataset creation
 test_meta_data_file_path = os.path.join(module_dir, 'Dataset/Metadata/test_meta.xlsx')
 test_data = pd.read_excel(test_meta_data_file_path).head(SAMPLE_SIZE)
 test_images_file_path = os.path.join(module_dir, 'Dataset/Test/')
 
 # Encode images for training datasets
-train_images = DataPreprocessing.image_feature_extraction(train_data, train_images_file_path, IMAGE_SIZE, False)
-# train_images_aug = DataPreprocessing.image_augmentation(train_data_aug, train_images_file_path, IMAGE_SIZE)
+train_images = DataPreprocessing.image_feature_extraction(train_data, train_images_file_path, IMAGE_SIZE, True)
 x_train = np.array([i[0] for i in train_images]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
 y_train = np.array([i[1] for i in train_images])
 

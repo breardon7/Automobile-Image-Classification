@@ -1,4 +1,6 @@
 import cv2
+import matplotlib.pyplot as plt
+from PIL import Image
 import pytesseract
 import os
 import pandas as pd
@@ -16,9 +18,13 @@ image_file_path = os.path.join(img_dir, image_path)
 '''
 # Load image, grayscale, Otsu's threshold
 # image = cv2.imread(r'C:\Users\brear\OneDrive\Documents\GitHub\Computer-Vision\Code\Dataset\Train\02753.jpg')
-image = cv2.imread(r"/home/ubuntu/Computer-Vision/Code/Dataset/Train02753.jpg")
-cv2.imshow('test image', image)
+# image = cv2.imread(r"/home/ubuntu/Computer-Vision/Code/Dataset/Train02753.jpg")
+#cv2.imshow('test image', image)
 
+image = Image.open(r'C:\Users\brear\OneDrive\Documents\GitHub\Computer-Vision\Code\Dataset\Train\02753.jpg')
+plt.imshow(image)
+plt.show()
+'''
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
 
@@ -45,4 +51,4 @@ print(data)
 cv2.imshow('thresh', thresh)
 cv2.imshow('opening', opening)
 cv2.imshow('result', result)
-cv2.waitKey()
+cv2.waitKey()'''
