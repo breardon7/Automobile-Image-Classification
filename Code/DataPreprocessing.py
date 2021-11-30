@@ -30,8 +30,6 @@ def image_feature_extraction(samples, img_dir, image_size, augment=False):
             image_resized = cv2.resize(cropped_image, (image_size, image_size))
             image_normalized = cv2.normalize(image_resized, None, alpha=0, beta=1,
                                              norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)  # normalize image
-            if i < 2:
-                cv2.imwrite('cropped_vehicle.png', image_normalized)
             if augment:
                 aug_image = data_augmentation(tf.expand_dims(image_normalized, 0))[0]
                 dataset.append([np.array(aug_image), np.array(data[4])])
