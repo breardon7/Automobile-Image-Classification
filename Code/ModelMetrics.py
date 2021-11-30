@@ -14,7 +14,6 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.utils.np_utils import to_categorical
 from sklearn.metrics import accuracy_score, f1_score, hamming_loss, cohen_kappa_score, matthews_corrcoef
 
-
 import DataPreprocessing
 
 # Hyper Parameters
@@ -60,18 +59,19 @@ print(train_data_copy)
 
 # Create train dataset for augmentation
 train_data_1 = train_data_copy[train_data_copy['Counts'] == 1].copy()
-train_data_1 = pd.concat([train_data_1]*10, ignore_index=True)
+train_data_1 = pd.concat([train_data_1] * 10, ignore_index=True)
 train_data_2 = train_data_copy[train_data_copy['Counts'] == 2].copy()
-train_data_2 = pd.concat([train_data_2]*5, ignore_index=True)
+train_data_2 = pd.concat([train_data_2] * 5, ignore_index=True)
 train_data_3 = train_data_copy[train_data_copy['Counts'] == 3].copy()
-train_data_3 = pd.concat([train_data_3]*3, ignore_index=True)
+train_data_3 = pd.concat([train_data_3] * 3, ignore_index=True)
 train_data_4 = train_data_copy[train_data_copy['Counts'] >= 4].copy()
-train_data_4 = pd.concat([train_data_4]*2, ignore_index=True)
-frames = [train_data_1,train_data_2,train_data_3,train_data_4]
+train_data_4 = pd.concat([train_data_4] * 2, ignore_index=True)
+frames = [train_data_1, train_data_2, train_data_3, train_data_4]
 train_data_aug = pd.concat(frames)
 
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
+
 
 def model_definition(model_type, opt, lr, batch):
     if opt == 'Adam':
@@ -98,7 +98,8 @@ def model_definition(model_type, opt, lr, batch):
             BatchNormalization(),
             Dense(CLASSES, activation="softmax")
         ])
-        mod_name = model_type  + '_' + opt  + '_' + 'batch' + batch + 'lr' + str(lr).replace('0.', '').replace('.','') + '.h5'
+        mod_name = model_type + '_' + opt + '_' + 'batch' + batch + 'lr' + str(lr).replace('0.', '').replace('.',
+                                                                                                             '') + '.h5'
         checkpoint = ModelCheckpoint(mod_name, monitor=MONITOR_VAL, verbose=1, save_best_only=True,
                                      save_weights_only=False, save_freq=1)
 
@@ -110,17 +111,21 @@ def model_definition(model_type, opt, lr, batch):
     else:
         if model_type == 'vgg':
             mod_specify = VGG19(weights="imagenet", include_top=False, input_shape=(IMAGE_SIZE, IMAGE_SIZE, CHANNELS),
-                    classes=CLASSES)
+                                classes=CLASSES)
         elif model_type == 'resnet':
-            mod_specify = ResNet101(weights="imagenet", include_top=False, input_shape=(IMAGE_SIZE, IMAGE_SIZE, CHANNELS),
-                                classes=CLASSES)
+            mod_specify = ResNet101(weights="imagenet", include_top=False,
+                                    input_shape=(IMAGE_SIZE, IMAGE_SIZE, CHANNELS),
+                                    classes=CLASSES)
         elif model_type == 'densenet':
-            mod_specify = DenseNet201(weights="imagenet", include_top=False, input_shape=(IMAGE_SIZE, IMAGE_SIZE, CHANNELS),
-                                classes=CLASSES)
+            mod_specify = DenseNet201(weights="imagenet", include_top=False,
+                                      input_shape=(IMAGE_SIZE, IMAGE_SIZE, CHANNELS),
+                                      classes=CLASSES)
         elif model_type == 'inception':
-            mod_specify = InceptionV3(weights="imagenet", include_top=False, input_shape=(IMAGE_SIZE, IMAGE_SIZE, CHANNELS),
-                                classes=CLASSES)
-        mod_name = model_type + '_' + opt  + '_' + 'batch' + batch + 'lr' + str(lr).replace('0.', '').replace('.', '') + '.h5'
+            mod_specify = InceptionV3(weights="imagenet", include_top=False,
+                                      input_shape=(IMAGE_SIZE, IMAGE_SIZE, CHANNELS),
+                                      classes=CLASSES)
+        mod_name = model_type + '_' + opt + '_' + 'batch' + batch + 'lr' + str(lr).replace('0.', '').replace('.',
+                                                                                                             '') + '.h5'
         for layer in vgg.layers:
             layer.trainable = False
         model = Sequential()
@@ -165,10 +170,12 @@ def run_models(model_list, learning_rate_list, batch_list, optimizer_list):
                     df.loc[len(df)] = [m, opt, lr, batch, acc, hlm, avg]
 
     df.to_csv('model_metrics.csv')
-    
+
+
 model_list = ['cnn', 'vgg', 'resnet', 'densenet', 'inception']
 optimizer_list = ['Adam', 'RMSprop', 'SGD', 'Adadelta']
 learning_rate_list = [0.00001, 0.00005, 0.0001, 0.001]
 batch_list = [32, 64]
 
-run_models(model_list=model_list, learning_rate_list=learning_rate_list, batch_list=batch_list, optimzer_list=optimizer_list)
+run_models(model_list=model_list, learning_rate_list=learning_rate_list, batch_list=batch_list,
+           optimzer_list=optimizer_list)

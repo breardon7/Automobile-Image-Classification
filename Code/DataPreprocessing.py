@@ -40,3 +40,4 @@ def image_feature_extraction(samples, img_dir, image_size, augment=False):
 
     random.shuffle(dataset)
     return dataset
+

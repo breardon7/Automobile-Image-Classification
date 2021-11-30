@@ -17,7 +17,7 @@ IMAGE_SIZE = 224
 CHANNELS = 3
 BATCH_SIZE = 64
 MONITOR_VAL = "val_accuracy"
-SAMPLE_SIZE = 20000
+SAMPLE_SIZE = 1000
 LR = 1e-3
 DROPOUT = 0.5
 CLASSES = 197
@@ -65,6 +65,8 @@ test_images = DataPreprocessing.image_feature_extraction(test_data, test_images_
 x_test = np.array([i[0] for i in test_images]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
 y_test = np.array([i[1] for i in test_images])
 
+x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=0.2, random_state=1)
+
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
 
@@ -84,7 +86,7 @@ def model_definition(pretrained=True):
                                      save_weights_only=False, save_freq=1)
         model.compile(optimizer='Adam', loss=LOSS, metrics=["accuracy"])
         early_stopping = EarlyStopping(monitor=MONITOR_VAL, patience=5, verbose=1)
-        model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=1, validation_data=(x_test, y_test),
+        model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=1, validation_data=(x_val, y_val),
                   verbose=1, callbacks=[checkpoint, early_stopping])
     else:
         # // CNN model
@@ -110,6 +112,6 @@ def model_definition(pretrained=True):
 
 
 def model_predict(model):
-    y_pred = model.predict(x_test)
+    y_pred = model.predict_classes(x_test)
     print('Classification Report: Model = {}'.format(model))
     print(classification_report(y_test, y_pred))
