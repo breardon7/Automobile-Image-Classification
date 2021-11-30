@@ -24,10 +24,8 @@ image_file_path = os.path.join(img_dir, image_path)
 #cv2.imshow('test image', image)
 
 # Load image, grayscale, Otsu's threshold
-image = cv2.imread(r'C:\Users\brear\OneDrive\Documents\GitHub\Computer-Vision\Code\Dataset\Train\02753.jpg')
-plt.imshow(image)
-plt.show()
-image_blurred = cv2.GaussianBlur(image, (5, 5), 0)
+image_vec = cv2.imread(r'C:\Users\brear\OneDrive\Documents\GitHub\Computer-Vision\Code\Dataset\Train\02753.jpg')
+image_blurred = cv2.GaussianBlur(image_vec, (5, 5), 0)
 blurred_float = image_blurred.astype(np.float32) / 255.0
 edgeDetector = cv2.ximgproc.createStructuredEdgeDetection('model.yml.gz')
 edges = edgeDetector.detectEdges(blurred_float) * 255.0
@@ -41,18 +39,16 @@ def SaltPepperNoise(edgeImg):
     while not np.array_equal(lastMedian, median):
         zeroed = np.invert(np.logical_and(median, edgeImg))
         edgeImg[zeroed] = 0
-    count = count + 1
-    if count > 70:
-        return median
-    '''lastMedian = median
-    median = cv2.medianBlur(edgeImg, 3)'''
+        count = count + 1
+        if count > 200:
+            return median
 edges_ = np.asarray(edges, np.uint8)
 SaltPepperNoise(edges_)
 cv2.imwrite('edge.jpg', edges_)
-image_display('edge.jpg')
+# image_display('edge.jpg')
 
 def findSignificantContour(edgeImg):
-    image, contours, hierarchy = cv2.findContours(
+    contours, hierarchy = cv2.findContours(
         edgeImg,
         cv2.RETR_TREE,
         cv2.CHAIN_APPROX_SIMPLE
@@ -74,14 +70,14 @@ def findSignificantContour(edgeImg):
     contoursWithArea.sort(key=lambda meta: meta[1], reverse=True)
     largestContour = contoursWithArea[0][0]
     return largestContour
-contour = findSignificantContour(edges_u)
+contour = findSignificantContour(edges_)
 # Draw the contour on the original image
-contourImg = np.copy(src)
+contourImg = np.copy(image_vec)
 cv2.drawContours(contourImg, [contour], 0, (0, 255, 0), 2, cv2.LINE_AA, maxLevel=1)
 cv2.imwrite('contour.jpg', contourImg)
-image_display('contour.jpg')
+# image_display('contour.jpg')
 
-mask = np.zeros_like(edges_u)
+mask = np.zeros_like(edges_)
 cv2.fillPoly(mask, [contour], 255)
 # calculate sure foreground area by dilating the mask
 mapFg = cv2.erode(mask, np.ones((5, 5), np.uint8), iterations=10)
@@ -96,7 +92,7 @@ trimap_print = np.copy(trimap)
 trimap_print[trimap_print == cv2.GC_PR_BGD] = 128
 trimap_print[trimap_print == cv2.GC_FGD] = 255
 cv2.imwrite('trimap.png', trimap_print)
-image_display('trimap.png')
+# image_display('trimap.png')
 
 
 
