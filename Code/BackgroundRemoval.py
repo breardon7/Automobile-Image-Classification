@@ -29,7 +29,7 @@ plt.imshow(image)
 plt.show()
 image_blurred = cv2.GaussianBlur(image, (5, 5), 0)
 blurred_float = image_blurred.astype(np.float32) / 255.0
-edgeDetector = cv2.ximgproc.createStructuredEdgeDetection('./model.yml')
+edgeDetector = cv2.ximgproc.createStructuredEdgeDetection('model.yml.gz')
 edges = edgeDetector.detectEdges(blurred_float) * 255.0
 cv2.imwrite('edge-raw.jpg', edges)
 
@@ -81,7 +81,22 @@ cv2.drawContours(contourImg, [contour], 0, (0, 255, 0), 2, cv2.LINE_AA, maxLevel
 cv2.imwrite('contour.jpg', contourImg)
 image_display('contour.jpg')
 
-
+mask = np.zeros_like(edges_u)
+cv2.fillPoly(mask, [contour], 255)
+# calculate sure foreground area by dilating the mask
+mapFg = cv2.erode(mask, np.ones((5, 5), np.uint8), iterations=10)
+# mark inital mask as "probably background"
+# and mapFg as sure foreground
+trimap = np.copy(mask)
+trimap[mask == 0] = cv2.GC_BGD
+trimap[mask == 255] = cv2.GC_PR_BGD
+trimap[mapFg == 255] = cv2.GC_FGD
+# visualize trimap
+trimap_print = np.copy(trimap)
+trimap_print[trimap_print == cv2.GC_PR_BGD] = 128
+trimap_print[trimap_print == cv2.GC_FGD] = 255
+cv2.imwrite('trimap.png', trimap_print)
+image_display('trimap.png')
 
 
 
