@@ -45,7 +45,6 @@ def SaltPepperNoise(edgeImg):
 edges_ = np.asarray(edges, np.uint8)
 SaltPepperNoise(edges_)
 cv2.imwrite('edge.jpg', edges_)
-# image_display('edge.jpg')
 
 def findSignificantContour(edgeImg):
     contours, hierarchy = cv2.findContours(
@@ -75,7 +74,6 @@ contour = findSignificantContour(edges_)
 contourImg = np.copy(image_vec)
 cv2.drawContours(contourImg, [contour], 0, (0, 255, 0), 2, cv2.LINE_AA, maxLevel=1)
 cv2.imwrite('contour.jpg', contourImg)
-# image_display('contour.jpg')
 
 mask = np.zeros_like(edges_)
 cv2.fillPoly(mask, [contour], 255)
@@ -92,39 +90,5 @@ trimap_print = np.copy(trimap)
 trimap_print[trimap_print == cv2.GC_PR_BGD] = 128
 trimap_print[trimap_print == cv2.GC_FGD] = 255
 cv2.imwrite('trimap.png', trimap_print)
-# image_display('trimap.png')
 
 
-
-
-
-
-'''
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
-
-# Morph open to remove noise
-kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (2,2))
-opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=1)
-
-# Find contours and remove small noise
-cnts = cv2.findContours(opening, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-for c in cnts:
-    area = cv2.contourArea(c)
-    if area < 50:
-        cv2.drawContours(opening, [c], -1, 0, -1)
-
-# Invert and apply slight Gaussian blur
-result = 255 - opening
-result = cv2.GaussianBlur(result, (3,3), 0)
-
-# Perform OCR
-data = pytesseract.image_to_string(result, lang='eng', config='--psm 6')
-print(data)
-
-cv2.imshow('thresh', thresh)
-cv2.imshow('opening', opening)
-cv2.imshow('result', result)
-cv2.waitKey()
-'''
