@@ -9,6 +9,7 @@ from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.python.keras.layers import Flatten, Dense
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.utils.np_utils import to_categorical
+from sklearn.model_selection import train_test_split
 
 from Code import DataPreprocessing
 

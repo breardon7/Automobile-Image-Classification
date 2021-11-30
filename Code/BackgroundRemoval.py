@@ -24,7 +24,7 @@ image_file_path = os.path.join(img_dir, image_path)
 #cv2.imshow('test image', image)
 
 # Load image, grayscale, Otsu's threshold
-image_vec = cv2.imread(r'C:\Users\brear\OneDrive\Documents\GitHub\Computer-Vision\Code\Dataset\Train\02753.jpg')
+image_vec = cv2.imread(r'C:\Users\brear\OneDrive\Documents\GitHub\Computer-Vision\Code\Dataset\Train\06647.jpg')
 image_blurred = cv2.GaussianBlur(image_vec, (5, 5), 0)
 blurred_float = image_blurred.astype(np.float32) / 255.0
 edgeDetector = cv2.ximgproc.createStructuredEdgeDetection('model.yml.gz')
