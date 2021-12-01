@@ -1,3 +1,4 @@
+
 import cv2
 import matplotlib.pyplot as plt
 from PIL import Image
@@ -8,23 +9,22 @@ import pandas as pd
 import numpy as np
 
 #pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-'''
+
 # Train Dataset creation
-SAMPLE_SIZE = 1000
-module_dir = os.path.dirname(__file__)  # Set path to current directory
-train_meta_data_file_path = os.path.join(module_dir, 'Metadata/train-meta.xlsx')
-train_data = pd.read_excel(train_meta_data_file_path).head(SAMPLE_SIZE)
-train_images_file_path = os.path.join(module_dir, 'Dataset/Train/')
-image_path = data[5].replace("'", "")
-image_file_path = os.path.join(img_dir, image_path)
-'''
+# SAMPLE_SIZE = 1000
+# module_dir = os.path.dirname(__file__)  # Set path to current directory
+# train_meta_data_file_path = os.path.join(module_dir, 'Metadata/train-meta.xlsx')
+# train_data = pd.read_excel(train_meta_data_file_path).head(SAMPLE_SIZE)
+# train_images_file_path = os.path.join(module_dir, 'Dataset/Train/')
+# image_path = data[5].replace("'", "")
+# image_file_path = os.path.join(img_dir, image_path)
 
 # image = cv2.imread(r'C:\Users\brear\OneDrive\Documents\GitHub\Computer-Vision\Code\Dataset\Train\02753.jpg')
 # image = cv2.imread(r"/home/ubuntu/Computer-Vision/Code/Dataset/Train02753.jpg")
 #cv2.imshow('test image', image)
 
 # Load image, grayscale, Otsu's threshold
-image_vec = cv2.imread(r'C:\Users\brear\OneDrive\Documents\GitHub\Computer-Vision\Code\Dataset\Train\06647.jpg')
+image_vec = cv2.imread(r'C:\Users\brear\OneDrive\Documents\GitHub\Computer-Vision\Code\test1.jpg')
 image_blurred = cv2.GaussianBlur(image_vec, (5, 5), 0)
 blurred_float = image_blurred.astype(np.float32) / 255.0
 edgeDetector = cv2.ximgproc.createStructuredEdgeDetection('model.yml.gz')
@@ -40,7 +40,7 @@ def SaltPepperNoise(edgeImg):
         zeroed = np.invert(np.logical_and(median, edgeImg))
         edgeImg[zeroed] = 0
         count = count + 1
-        if count > 200:
+        if count > 1000:
             return median
 edges_ = np.asarray(edges, np.uint8)
 SaltPepperNoise(edges_)
@@ -90,5 +90,3 @@ trimap_print = np.copy(trimap)
 trimap_print[trimap_print == cv2.GC_PR_BGD] = 128
 trimap_print[trimap_print == cv2.GC_FGD] = 255
 cv2.imwrite('trimap.png', trimap_print)
-
-
