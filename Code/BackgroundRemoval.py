@@ -24,7 +24,7 @@ image_file_path = os.path.join(img_dir, image_path)
 #cv2.imshow('test image', image)
 
 # Load image, grayscale, Otsu's threshold
-image = cv2.imread(r'C:\Users\brear\OneDrive\Documents\GitHub\Computer-Vision\Code\Dataset\Train\02753.jpg')
+image = cv2.imread("Dataset/Train/02753.jpg")
 plt.imshow(image)
 plt.show()
 image_blurred = cv2.GaussianBlur(image, (5, 5), 0)

@@ -27,11 +27,14 @@ def image_feature_extraction(samples, img_dir, image_size, augment=False):
             x2 = data[2]
             image = cv2.imread(image_file_path, cv2.IMREAD_COLOR)
             cropped_image = image[y1:y2, x1:x2]
+            cv2.imwrite('test1.jpg', cropped_image)
             image_resized = cv2.resize(cropped_image, (image_size, image_size))
             image_normalized = cv2.normalize(image_resized, None, alpha=0, beta=1,
                                              norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)  # normalize image
+            cv2.imwrite('test.jpg', image_resized)
             if augment:
                 aug_image = data_augmentation(tf.expand_dims(image_normalized, 0))[0]
+                cv2.imwrite('test_aug.jpg', aug_image)
                 dataset.append([np.array(aug_image), np.array(data[4])])
             else:
                 dataset.append([np.array(image_normalized), np.array(data[4])])
@@ -40,4 +43,3 @@ def image_feature_extraction(samples, img_dir, image_size, augment=False):
 
     random.shuffle(dataset)
     return dataset
-
