@@ -10,6 +10,7 @@ from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.python.keras.layers import Flatten, Dense
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.utils.np_utils import to_categorical
+from sklearn.model_selection import train_test_split
 
 from Code import DataPreprocessing
 
@@ -60,7 +61,7 @@ train_aug_images = DataPreprocessing.image_feature_extraction(train_data_aug, tr
 train_images_final = train_images + train_aug_images
 x_train = np.array([i[0] for i in train_images_final]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
 y_train = np.array([i[1] for i in train_images_final])
-
+'''
 # Encode images for test datasets
 test_images = DataPreprocessing.image_feature_extraction(test_data, test_images_file_path, IMAGE_SIZE, False)
 x_test = np.array([i[0] for i in test_images]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
@@ -116,3 +117,4 @@ def model_predict(model):
     y_pred = model.predict_classes(x_test)
     print('Classification Report: Model = {}'.format(model))
     print(classification_report(y_test, y_pred))
+'''
