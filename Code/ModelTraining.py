@@ -10,7 +10,6 @@ from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.python.keras.layers import Flatten, Dense
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.utils.np_utils import to_categorical
-from sklearn.model_selection import train_test_split
 
 from Code import DataPreprocessing
 
@@ -19,11 +18,12 @@ IMAGE_SIZE = 224
 CHANNELS = 3
 BATCH_SIZE = 64
 MONITOR_VAL = "val_accuracy"
-SAMPLE_SIZE = 1000
+SAMPLE_SIZE = 5000
 LR = 1e-3
 DROPOUT = 0.5
 CLASSES = 197
 LOSS = "categorical_crossentropy"
+EPOCHS = 3
 
 # Train Dataset creation
 module_dir = os.path.dirname(__file__)  # Set path to current directory
@@ -38,32 +38,36 @@ test_images_file_path = os.path.join(module_dir, 'Dataset/Test/')
 
 # Data Augmentation
 # Add value counts of targets as column
-target_counts = train_data['class'].value_counts()
-target_counts_dict = target_counts.to_dict()
-train_data_copy = train_data.copy()
-train_data_copy['Counts'] = train_data_copy['class'].map(target_counts_dict)
-
+#target_counts = train_data['class'].value_counts()
+#target_counts_dict = target_counts.to_dict()
+#train_data_copy = train_data.copy()
+#train_data_copy['Counts'] = train_data_copy['class'].map(target_counts_dict)
 # Create train dataset for augmentation
-train_data_1 = train_data_copy[train_data_copy['Counts'] == 1].copy()
-train_data_1 = pd.concat([train_data_1] * 10, ignore_index=True)
-train_data_2 = train_data_copy[train_data_copy['Counts'] == 2].copy()
-train_data_2 = pd.concat([train_data_2] * 5, ignore_index=True)
-train_data_3 = train_data_copy[train_data_copy['Counts'] == 3].copy()
-train_data_3 = pd.concat([train_data_3] * 3, ignore_index=True)
-train_data_4 = train_data_copy[train_data_copy['Counts'] >= 4].copy()
-train_data_4 = pd.concat([train_data_4] * 2, ignore_index=True)
-frames = [train_data_1, train_data_2, train_data_3, train_data_4]
-train_data_aug = pd.concat(frames)
+#train_data_1 = train_data_copy[train_data_copy['Counts'] == 1].copy()
+#train_data_1 = pd.concat([train_data_1] * 10, ignore_index=True)
+#train_data_2 = train_data_copy[train_data_copy['Counts'] == 2].copy()
+#train_data_2 = pd.concat([train_data_2] * 5, ignore_index=True)
+#train_data_3 = train_data_copy[train_data_copy['Counts'] == 3].copy()
+#train_data_3 = pd.concat([train_data_3] * 3, ignore_index=True)
+#train_data_4 = train_data_copy[train_data_copy['Counts'] >= 4].copy()
+#train_data_4 = pd.concat([train_data_4] * 2, ignore_index=True)
+#frames = [train_data_1, train_data_2, train_data_3, train_data_4]
+#train_data_aug = pd.concat(frames)
+
+#i changed the augmentation data to this because the mean count for each class is about 45 so we can just duplicate the whole dataset
+train_data_aug = pd.concat([train_data] * 2, ignore_index=True)
+#random.shuffle(train_data_aug)
+print(train_data_aug)
 
 # Encode images for training datasets
-train_images = DataPreprocessing.image_feature_extraction(train_data, train_images_file_path, IMAGE_SIZE, False)
-train_aug_images = DataPreprocessing.image_feature_extraction(train_data_aug, train_images_file_path, IMAGE_SIZE, True)
+train_images = DataPreprocessing.image_feature_extraction(train_data, train_images_file_path, False)
+train_aug_images = DataPreprocessing.image_feature_extraction(train_data_aug, train_images_file_path, True)
 train_images_final = train_images + train_aug_images
 x_train = np.array([i[0] for i in train_images_final]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
 y_train = np.array([i[1] for i in train_images_final])
-'''
+
 # Encode images for test datasets
-test_images = DataPreprocessing.image_feature_extraction(test_data, test_images_file_path, IMAGE_SIZE, False)
+test_images = DataPreprocessing.image_feature_extraction(test_data, test_images_file_path, False)
 x_test = np.array([i[0] for i in test_images]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
 y_test = np.array([i[1] for i in test_images])
 
@@ -88,7 +92,7 @@ def model_definition(pretrained=True):
                                      save_weights_only=False, save_freq=1)
         model.compile(optimizer='Adam', loss=LOSS, metrics=["accuracy"])
         early_stopping = EarlyStopping(monitor=MONITOR_VAL, patience=5, verbose=1)
-        model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=1, validation_data=(x_val, y_val),
+        model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=EPOCHS, validation_data=(x_val, y_val),
                   verbose=1, callbacks=[checkpoint, early_stopping])
     else:
         # // CNN model
@@ -117,4 +121,3 @@ def model_predict(model):
     y_pred = model.predict_classes(x_test)
     print('Classification Report: Model = {}'.format(model))
     print(classification_report(y_test, y_pred))
-'''

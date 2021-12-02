@@ -75,8 +75,8 @@ def remove_image_background(image_vec):
     # cv2.imwrite('trimap.png', trimap_print)
 
     image_without_background = cv2.bitwise_and(image_vec, image_vec, mask=trimap_print)
-    plt.imshow(image_without_background)
-    plt.show()
+    #plt.imshow(image_without_background)
+    #plt.show()
     return image_without_background
     # cv2.imwrite('test.png', image_vec)
 

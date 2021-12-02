@@ -39,13 +39,13 @@ test_data = pd.read_excel(test_meta_data_file_path).head(SAMPLE_SIZE)
 test_images_file_path = os.path.join(module_dir, 'Dataset/Test/')
 
 # Encode images for training datasets
-train_images = DataPreprocessing.image_feature_extraction(train_data, train_images_file_path, IMAGE_SIZE, False)
+train_images = DataPreprocessing.image_feature_extraction(train_data, train_images_file_path, False)
 # train_images_aug = DataPreprocessing.image_augmentation(train_data_aug, train_images_file_path, IMAGE_SIZE)
 x_train = np.array([i[0] for i in train_images]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
 y_train = np.array([i[1] for i in train_images])
 
 # Encode images for test datasets
-test_images = DataPreprocessing.image_feature_extraction(test_data, test_images_file_path, IMAGE_SIZE, False)
+test_images = DataPreprocessing.image_feature_extraction(test_data, test_images_file_path, False)
 x_test = np.array([i[0] for i in test_images]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
 y_test = np.array([i[1] for i in test_images])
 

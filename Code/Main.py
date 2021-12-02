@@ -1,4 +1,4 @@
-from Code.ModelMetrics import model_definition, model_predict
+from Code.ModelTraining import model_definition, model_predict
 
 model_vgg19 = model_definition(pretrained=True)
 #model_CNN = model_definition(pretrained=False)
