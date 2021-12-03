@@ -1,8 +1,4 @@
-from Code.ModelTraining import model_definition, model_predict
+import ModelTraining
 
-model_vgg19 = model_definition(pretrained=True)
-#model_CNN = model_definition(pretrained=False)
+ModelTraining.model_definition_and_training(pretrained=True, custom=False)
 
-# Predict & run classification report
-model_predict(model=model_vgg19)
-#model_predict(model=model_CNN)

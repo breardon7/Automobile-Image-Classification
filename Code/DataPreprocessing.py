@@ -4,8 +4,7 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-
-from Code import BackgroundRemoval
+import BackgroundRemoval
 
 IMAGE_SIZE = 224
 CHANNELS = 3
@@ -18,7 +17,7 @@ data_augmentation = tf.keras.Sequential([
 ])
 
 
-def image_feature_extraction(samples, img_dir, augment=False):
+def image_feature_extraction(samples, img_dir):
     dataset = []
     for i in range(len(samples)):
         data = samples.iloc[i]
@@ -35,12 +34,18 @@ def image_feature_extraction(samples, img_dir, augment=False):
             image_resized = cv2.resize(background_removed_image, (IMAGE_SIZE, IMAGE_SIZE))
             image_normalized = cv2.normalize(image_resized, None, alpha=0, beta=1,
                                              norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)  # normalize image
-            if augment:
-                aug_image = data_augmentation(tf.expand_dims(image_normalized, 0))[0]
-                dataset.append([np.array(aug_image), np.array(data[4])])
-            else:
-                dataset.append([np.array(image_normalized), np.array(data[4])])
+            dataset.append([np.array(image_normalized), np.array(data[4])])
         except:
             continue
     random.shuffle(dataset)
     return dataset
+
+
+def augment_data(samples):
+    augmented_dataset = []
+    for image in samples:
+        image_array = image[0]
+        augmented_image = data_augmentation(tf.expand_dims(image_array, 0))[0]
+        augmented_dataset.append([np.array(augmented_image), np.array(image[1])])
+    random.shuffle(augmented_dataset)
+    return augmented_dataset
