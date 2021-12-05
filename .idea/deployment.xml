@@ -12,7 +12,7 @@
       <paths name="GCP">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/ubuntu/Code/Computer-Vision" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/home/ubuntu/ComputerVision" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

@@ -1,9 +1,10 @@
 import os
 import random
+
 import cv2
-import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
+
 import BackgroundRemoval
 
 IMAGE_SIZE = 224
@@ -19,6 +20,7 @@ data_augmentation = tf.keras.Sequential([
 
 def image_feature_extraction(samples, img_dir):
     dataset = []
+    image_count = 1
     for i in range(len(samples)):
         data = samples.iloc[i]
         image_path = data[5].replace("'", "")
@@ -35,6 +37,8 @@ def image_feature_extraction(samples, img_dir):
             image_normalized = cv2.normalize(image_resized, None, alpha=0, beta=1,
                                              norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)  # normalize image
             dataset.append([np.array(image_normalized), np.array(data[4])])
+            print("Processed Image "+ str(image_count))
+            image_count += 1
         except:
             continue
     random.shuffle(dataset)
