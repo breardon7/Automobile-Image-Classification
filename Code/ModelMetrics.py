@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.metrics import accuracy_score, hamming_loss, cohen_kappa_score, \
-    ConfusionMatrixDisplay, confusion_matrix
+    ConfusionMatrixDisplay, confusion_matrix, classification_report
 from tensorflow import keras
 from tensorflow.python.keras.utils.np_utils import to_categorical
 
@@ -9,7 +9,6 @@ from tensorflow.python.keras.utils.np_utils import to_categorical
 IMAGE_SIZE = 224
 CHANNELS = 3
 test_images = np.load('DataStorage/test_data.npy', allow_pickle=True)
-test_images = test_images[1:1000]
 print(len(test_images))
 x_test = np.array([i[0] for i in test_images]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
 y_test = np.array([i[1] for i in test_images])
@@ -20,16 +19,16 @@ y_test = np.argmax(y_test, axis=1)
 def model_predict(trained_model):
     y_pred = trained_model.predict(x_test)
     y_pred = np.argmax(y_pred, axis=1)
-    # print(classification_report(y_test, y_pred))
+    print(classification_report(y_test, y_pred))
     print("The Hamming loss is: " + str(hamming_loss(y_test, y_pred)))
     print("The Accuracy score is: " + str(accuracy_score(y_test, y_pred)))
     print("The Cohen Kappa score is: " + str(cohen_kappa_score(y_test, y_pred)))
 
-    matrix = confusion_matrix(y_test, y_pred)
-    display_matrix = ConfusionMatrixDisplay(confusion_matrix=matrix)
-    display_matrix.plot()
-    plt.show()
+    #matrix = confusion_matrix(y_test, y_pred)
+    #display_matrix = ConfusionMatrixDisplay(confusion_matrix=matrix)
+    #display_matrix.plot()
+    #plt.show()
 
 
-model = keras.models.load_model('SavedModel/pretrained_vgg19.h5')
-model_predict(model)
+
+

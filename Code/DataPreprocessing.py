@@ -37,7 +37,7 @@ def image_feature_extraction(samples, img_dir):
             image_normalized = cv2.normalize(image_resized, None, alpha=0, beta=1,
                                              norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)  # normalize image
             dataset.append([np.array(image_normalized), np.array(data[4])])
-            print("Processed Image "+ str(image_count))
+            print("Processed Image " + str(image_count))
             image_count += 1
         except:
             continue

@@ -14,7 +14,7 @@ def salt_pepper_noise(image_edges):
             return median
 
 
-def find_car_contour(image_edge):
+def find_significant_contour(image_edge):
     contours, hierarchy = cv2.findContours(
         image_edge,
         cv2.RETR_TREE,
@@ -46,7 +46,7 @@ def remove_image_background(image_vec):
     edges = edge_detector.detectEdges(blurred_float) * 255.0
     edges_array = np.asarray(edges, np.uint8)
     salt_pepper_noise(edges_array)
-    contour = find_car_contour(edges_array)
+    contour = find_significant_contour(edges_array)
     # Draw the contour on the original image
     contourImg = np.copy(image_vec)
     cv2.drawContours(contourImg, [contour], 0, (0, 255, 0), 2, cv2.LINE_AA, maxLevel=1)
