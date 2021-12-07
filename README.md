@@ -1,4 +1,5 @@
-# Computer-Vision
+# Automobile Image Classification
+
 
 ## Summary
 This repository contains [Bradley Reardon](https://github.com/breardon7), [Divya Parmar](https://github.com/dparmar16) and [Haruna Salim](https://github.com/BABAYEGAR)'s final project for George Washington University's DATS 6203:Machine Learning II course.
