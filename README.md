@@ -28,7 +28,7 @@ Our project objective was to a convolutinal neural network to a real world probl
 
 2. After downloading the dataset, copy the images from the car_test into the Dataset/Test folder and the images from the car_train into the Dataset/Train folder.
 
-3. To cut data preprocessing time, you can access the numpy files here(https://drive.google.com/file/d/1UIDvnY5WKOtZEBPg_BxjFJlT3mzN127d/view?usp=sharing). Simple copy the train_data.npy and test_data.npy into the DataStorage folder in the Code folder.If you also want to reprocess the data, just execute the DataGenerator.py file again.
+3. To cut data preprocessing time, you can access the numpy files [here](https://drive.google.com/file/d/1UIDvnY5WKOtZEBPg_BxjFJlT3mzN127d/view?usp=sharing). Simple copy the train_data.npy and test_data.npy into the DataStorage folder in the Code folder.If you also want to reprocess the data, just execute the DataGenerator.py file again.
 
 3. When you run the main.py file. Set either pretrained or custom to true or false or both. 
 
