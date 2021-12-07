@@ -1,8 +1,6 @@
 import numpy as np
-from matplotlib import pyplot as plt
 from sklearn.metrics import accuracy_score, hamming_loss, cohen_kappa_score, \
-    ConfusionMatrixDisplay, confusion_matrix, classification_report
-from tensorflow import keras
+    classification_report
 from tensorflow.python.keras.utils.np_utils import to_categorical
 
 # Hyper Parameters
