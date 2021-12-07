@@ -2,7 +2,7 @@
 
 ## Summary
 This repository contains [Bradley Reardon](https://github.com/breardon7), [Divya Parmar](https://github.com/dparmar16) and [Haruna Salim](https://github.com/BABAYEGAR)'s final project for George Washington University's DATS 6203:Machine Learning II course.
-Our project objective was to a convolutinal neural network to a real world problem. For our project we applied preprocessing techniques and a convolutinal neural network to classify cars.
+Our project objective was to apply a deep learning framework and network to a real world problem. For our project we applied preprocessing techniques and a convolutinal neural network to classify cars by make and model.
 
 ## Data
 [Data Source 1](https://ai.stanford.edu/~jkrause/cars/car_dataset.html)   
