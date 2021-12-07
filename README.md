@@ -26,7 +26,7 @@ Our project objective was to a convolutinal neural network to a real world probl
 * pandas
 * matplotlib
 
-2. After downloading the dataset, copy the images from the car_test into the Dataset/Test folder and the images from the car_train into the Dataset/Train folder.
+2. After downloading the training images from [here](https://ai.stanford.edu/~jkrause/car196/cars_train.tgz) and the test images from [here](https://ai.stanford.edu/~jkrause/car196/cars_test.tgz), copy the images from the car_test into the Dataset/Test folder and the images from the car_train into the Dataset/Train folder.
 
 3. To cut data preprocessing time, you can access the numpy files [here](https://drive.google.com/file/d/1UIDvnY5WKOtZEBPg_BxjFJlT3mzN127d/view?usp=sharing). Simple copy the train_data.npy and test_data.npy into the DataStorage folder in the Code folder.If you also want to reprocess the data, just execute the DataGenerator.py file again.
 
