@@ -28,7 +28,7 @@ Our project objective was to apply a deep learning framework and network to a re
 
 2. After downloading the training images from [here](https://ai.stanford.edu/~jkrause/car196/cars_train.tgz) and the test images from [here](https://ai.stanford.edu/~jkrause/car196/cars_test.tgz), copy the images from the car_test into the Dataset/Test folder and the images from the car_train into the Dataset/Train folder.
 
-3. To cut data preprocessing time, you can access the numpy files [here](https://drive.google.com/file/d/1UIDvnY5WKOtZEBPg_BxjFJlT3mzN127d/view?usp=sharing). Simple copy the train_data.npy and test_data.npy into the DataStorage folder in the Code folder.If you also want to reprocess the data, just execute the DataGenerator.py file again.
+3. To cut data preprocessing time, you can access the already preprocessed numpy files [here](https://drive.google.com/file/d/1UIDvnY5WKOtZEBPg_BxjFJlT3mzN127d/view?usp=sharing). Simple copy the train_data.npy and test_data.npy into the DataStorage folder in the Code folder.If you also want to reprocess the data, just execute the DataGenerator.py file again.
 
 3. When you run the main.py file. Set either pretrained or custom to true or false or both. 
 
