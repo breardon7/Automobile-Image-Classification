@@ -1,11 +1,8 @@
-import os
 import warnings
 from sys import platform
 
 import numpy as np
-from keras.applications.inception_v3 import InceptionV3
 from keras.layers import BatchNormalization, MaxPooling2D, Conv2D, AveragePooling2D, Dropout
-from sklearn.metrics import classification_report, hamming_loss, accuracy_score, cohen_kappa_score
 from sklearn.model_selection import train_test_split
 from tensorflow.python.keras import Sequential
 from tensorflow.python.keras.applications.vgg19 import VGG19
@@ -48,8 +45,8 @@ def model_definition_and_training(pretrained, custom):
 
     if pretrained:
         # // pretrained model - vgg19
-        vgg = InceptionV3(weights="imagenet", include_top=False, input_shape=(IMAGE_SIZE, IMAGE_SIZE, CHANNELS),
-                          classes=CLASSES)
+        vgg = VGG19(weights="imagenet", include_top=False, input_shape=(IMAGE_SIZE, IMAGE_SIZE, CHANNELS),
+                    classes=CLASSES)
         for layer in vgg.layers:
             layer.trainable = False
         model = Sequential()
@@ -64,6 +61,7 @@ def model_definition_and_training(pretrained, custom):
         model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=EPOCHS, validation_data=(x_val, y_val),
                   verbose=1, callbacks=[checkpoint, early_stopping])
         model_predict(model)
+        model.save("SavedModel/pretrained_vgg19.h5")
 
     if custom:
         model = Sequential()
